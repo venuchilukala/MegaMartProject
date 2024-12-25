@@ -5,6 +5,10 @@ body{
   font-family: "Inter", sans-serif;
 }
 
+.section-container{
+  @apply max-w-screen-2xl container mx-auto;
+}
+
 /* CSS HEX */
 /* --oxford-blue: #00072dff;
 --penn-blue: #001c55ff;
