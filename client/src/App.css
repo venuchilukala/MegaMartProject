@@ -9,6 +9,10 @@ body{
   @apply max-w-screen-2xl container mx-auto;
 }
 
+header{
+  z-index: 10001 !important;
+}
+
 /* CSS HEX */
 /* --oxford-blue: #00072dff;
 --penn-blue: #001c55ff;

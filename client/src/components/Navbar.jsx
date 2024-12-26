@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "/logo.png";
 
 const Navbar = () => {
+  const [isSticky, setSticky] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const offset = window.scrollY;
+      setSticky(offset > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const navItems = (
     <>
       <li>
@@ -64,8 +79,8 @@ const Navbar = () => {
     </>
   );
   return (
-    <header className="max-w-screen-2xl container mx-auto">
-      <div className="navbar xl:px-5">
+    <header className="h-16 max-w-screen-2xl container mx-auto fixed left-0 right-0 transition-all duration-300 ease-in-out">
+      <div className={`navbar xl:px-5 ${isSticky ? "shadow-md bg-blue-100 transition-all duration-300 ease-in-out" : ""}`}>
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

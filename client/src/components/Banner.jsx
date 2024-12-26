@@ -3,7 +3,7 @@ import banner from '/banner.webp'
 
 const Banner = () => {
   return (
-    <div>
+    <div className='pt-16'>
       <img src={banner} alt="Banner" />
     </div>
   )
