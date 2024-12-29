@@ -13,7 +13,7 @@ const Cards = (props) => {
   };
 
   return (
-    <div className="card bg-base-100 w-96 shadow-xl relative">
+    <div className="card bg-base-100  shadow-xl relative m-4">
       <div
         className={`absolute right-2 top-2 rating z-10 p-4 bg-blue-400 rounded-tr-3xl rounded-bl-3xl ${
           isFavourite ? "text-rose-600" : "text-white"
@@ -22,7 +22,7 @@ const Cards = (props) => {
       >
         <FaHeart className="h-5 w-5 cursor-pointer" />
       </div>
-      <Link to="/">
+      <Link>
         <figure>
           <img
             src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
@@ -32,7 +32,7 @@ const Cards = (props) => {
         </figure>
       </Link>
       <div className="card-body">
-        <Link to="/"><h2 className="card-title">{name}</h2></Link>
+        <Link><h2 className="card-title">{name}</h2></Link>
         <p>{description}</p>
         <div className="card-actions justify-end">
           <button className="btn btn-primary">Buy Now</button>
