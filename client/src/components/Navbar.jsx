@@ -23,7 +23,7 @@ const Navbar = () => {
         <a href="/">Home</a>
       </li>
       <li>
-        <details>
+        {/* <details>
           <summary>Shop</summary>
           <ul className="p-2 xl:w-52">
             <li>
@@ -71,7 +71,8 @@ const Navbar = () => {
               </ul>
             </li>
           </ul>
-        </details>
+        </details> */}
+        <a href="/store">Stores</a>
       </li>
       <li>
         <a>Support</a>

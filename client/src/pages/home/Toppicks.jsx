@@ -5,31 +5,31 @@ import Slider from "react-slick";
 import Cards from "../../components/Cards";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
-const simpleNextArrow = (props) => {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{ ...style, display: "block", background: "red" }}
-      onClick={onClick}
-    >
-      NEXT
-    </div>
-  );
-};
+// const simpleNextArrow = (props) => {
+//   const { className, style, onClick } = props;
+//   return (
+//     <div
+//       className={className}
+//       style={{ ...style, display: "block", background: "red" }}
+//       onClick={onClick}
+//     >
+//       NEXT
+//     </div>
+//   );
+// };
 
-const simplePrevArrow = (props) => {
-  const { className, style, onClick } = props;
-  return (
-    <div
-      className={className}
-      style={{ ...style, display: "block", background: "green" }}
-      onClick={onClick}
-    >
-      PREV
-    </div>
-  );
-};
+// const simplePrevArrow = (props) => {
+//   const { className, style, onClick } = props;
+//   return (
+//     <div
+//       className={className}
+//       style={{ ...style, display: "block", background: "green" }}
+//       onClick={onClick}
+//     >
+//       PREV
+//     </div>
+//   );
+// };
 
 const Toppicks = () => {
   const [products, setProducts] = useState([]);
@@ -79,8 +79,8 @@ const Toppicks = () => {
       },
     ],
 
-    nextArrow: <simpleNextArrow />,
-    prevarrow: <simplePrevArrow />,
+    // nextArrow: <simpleNextArrow />,
+    // prevArrow: <simplePrevArrow />,
   };
   console.log(products);
   return (
@@ -116,3 +116,6 @@ const Toppicks = () => {
 };
 
 export default Toppicks;
+
+
+
