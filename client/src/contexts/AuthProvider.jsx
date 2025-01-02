@@ -17,7 +17,9 @@ const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  console.log("user in AuthProvider", user);
 
   // Create an account
   const createUser = (email, password) => {
@@ -50,18 +52,15 @@ const AuthProvider = ({ children }) => {
   // check signed in user
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("Firebase currentUser:", currentUser);
       if (currentUser) {
-        setUser(currentUser)
-        setLoading(false)
-      } else {
-        // User is signed out
-        // ...
-      }
+        setUser(currentUser);
+      } 
+      setLoading(false);
     });
-
     return () => {
-      return unSubscribe()
-    }
+      return unSubscribe();
+    };
   }, []);
 
   const authInfo = {

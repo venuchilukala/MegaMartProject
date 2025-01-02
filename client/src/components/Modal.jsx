@@ -49,6 +49,7 @@ const Modal = () => {
         console.log(error);
       });
   };
+  
   return (
     <div>
       <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">

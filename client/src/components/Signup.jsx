@@ -13,26 +13,41 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
 
-  const { createUser } = useContext(AuthContext);
-  const [errorMessage, setErrorMessage] = useState("")
+  const { createUser, signnUpWithGmail } = useContext(AuthContext);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname || "/"
-  
-  const onSubmit = (data) =>{
+  const from = location.state?.from?.pathname || "/";
+
+  const onSubmit = (data) => {
     const email = data.email;
     const password = data.password;
 
-    createUser(email, password).then((result)=>{
-      const user = result.user;
-      alert("Account creation done Successfully")
-      navigate(from , {replace : true})
-    }).catch((error)=>{
-      const errorMessage = error.message;
-      setErrorMessage(errorMessage)
-    })
-  }  
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        alert("Account creation done Successfully");
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        setErrorMessage(errorMessage);
+      });
+  };
+
+  const handleLogin = () => {
+    signnUpWithGmail()
+      .then((result) => {
+        const user = result.user;
+        alert("Login Successfull");
+        navigate(from, { replace: true });
+        document.getElementById("my_modal_5").close();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="max-w-md shadow flex items-center justify-center mx-auto bg-white w-full my-20 relative">
@@ -76,9 +91,11 @@ const Signup = () => {
           </div>
           {/* Error */}
 
-          {
-            errorMessage ? <p className="text-red text-xs italic">{errorMessage}</p> : ""
-          }
+          {errorMessage ? (
+            <p className="text-red text-xs italic">{errorMessage}</p>
+          ) : (
+            ""
+          )}
 
           {/* Login Btn */}
           <div className="form-control mt-6">
@@ -94,7 +111,8 @@ const Signup = () => {
             </button>
           </p>
 
-          <Link to="/"
+          <Link
+            to="/"
             className="btn btn-sm btn-circle btn-ghost absolute right-1 top-2"
           >
             ✕
@@ -102,7 +120,10 @@ const Signup = () => {
         </form>
 
         <div className="flex gap-5 my-5">
-          <button className="btn btn-circle hover:bg-primary hover:text-white">
+          <button
+            className="btn btn-circle hover:bg-primary hover:text-white"
+            onClick={handleLogin}
+          >
             <FaGoogle />
           </button>
           <button className="btn btn-circle hover:bg-primary hover:text-white">

@@ -5,6 +5,7 @@ import Store from "../pages/shop/Store";
 import Cards from "../components/Cards";
 import StoreItems from "../pages/shop/StoreItems";
 import Signup from "../components/Signup";
+import PrivateRouter from "../privaterouter/PrivateRouter";
 
 const router = createBrowserRouter([
   {
@@ -17,17 +18,29 @@ const router = createBrowserRouter([
       },
       {
         path: "/store",
-        element: <Store />,
+        element: (
+          <PrivateRouter>
+            <Store />
+          </PrivateRouter>
+        ),
       },
       {
         path: "/store/:id",
-        element: <StoreItems />,
+        element: (
+          <PrivateRouter>
+            <StoreItems />
+          </PrivateRouter>
+        ),
       },
     ],
   },
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "*",
+    element: <div>404 - Page Not Found</div>, // Replace with a custom 404 component
   },
 ]);
 
