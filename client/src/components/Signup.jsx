@@ -1,9 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import Modal from "./Modal";
+import { AuthContext } from "../contexts/AuthProvider";
 
 const Signup = () => {
   const {
@@ -12,7 +13,27 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const { createUser } = useContext(AuthContext);
+  const [errorMessage, setErrorMessage] = useState("")
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/"
+  
+  const onSubmit = (data) =>{
+    const email = data.email;
+    const password = data.password;
+
+    createUser(email, password).then((result)=>{
+      const user = result.user;
+      alert("Account creation done Successfully")
+      navigate(from , {replace : true})
+    }).catch((error)=>{
+      const errorMessage = error.message;
+      setErrorMessage(errorMessage)
+    })
+  }  
+
   return (
     <div className="max-w-md shadow flex items-center justify-center mx-auto bg-white w-full my-20 relative">
       <div className="modal-action flex flex-col justify-center items-center mt-0 ">
@@ -55,9 +76,13 @@ const Signup = () => {
           </div>
           {/* Error */}
 
+          {
+            errorMessage ? <p className="text-red text-xs italic">{errorMessage}</p> : ""
+          }
+
           {/* Login Btn */}
           <div className="form-control mt-6">
-            <input type="submit" value="Login" className="btn btn-primary" />
+            <input type="submit" value="Signup" className="btn btn-primary" />
           </div>
           <p className="text-center my-2">
             Have an account?{" "}

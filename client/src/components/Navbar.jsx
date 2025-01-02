@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import logo from "/logo.png";
 import { FaRegUser } from "react-icons/fa";
 import Modal from "./Modal";
+import { AuthContext } from "../contexts/AuthProvider";
+import Profile from "./Profile";
 
 const Navbar = () => {
   const [isSticky, setSticky] = useState(false);
+
+  const { user } = useContext(AuthContext);
+  
+  console.log(user);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -149,50 +155,18 @@ const Navbar = () => {
           </div>
 
           {/* Login button */}
-          <button
-            onClick={() => document.getElementById("my_modal_5").showModal()}
-            className="btn flex items-center gap-2 rounded-full px-6 bg-gray-400 text-white"
-          >
-            <FaRegUser />
-          </button>
-          <Modal/>
-          {/* Profile icon */}
-          <div>
-            <div className="drawer drawer-end z-10">
-              <input
-                id="my-drawer-4"
-                type="checkbox"
-                className="drawer-toggle"
-              />
-              <div className="drawer-content">
-                {/* Page content here */}
-                <label
-                  htmlFor="my-drawer-4"
-                  className="drawer-button btn btn-ghost btn-circle avatar"
-                >
-                  <div className="w-10 rounded-full">
-                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                  </div>
-                </label>
-              </div>
-              <div className="drawer-side">
-                <label
-                  htmlFor="my-drawer-4"
-                  aria-label="close sidebar"
-                  className="drawer-overlay"
-                ></label>
-                <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-                  {/* Sidebar content here */}
-                  <li>
-                    <a>Sidebar Item 1</a>
-                  </li>
-                  <li>
-                    <a>Sidebar Item 2</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          {user ? (
+            <Profile user={user} />
+          ) : (
+            <button
+              onClick={() => document.getElementById("my_modal_5").showModal()}
+              className="btn flex items-center gap-2 rounded-full px-6 bg-gray-400 text-white"
+            >
+              <FaRegUser />
+            </button>
+          )}
+
+          <Modal />
         </div>
       </div>
     </header>

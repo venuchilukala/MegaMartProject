@@ -1,8 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../contexts/AuthProvider";
 
 const Modal = () => {
   const {
@@ -11,7 +12,43 @@ const Modal = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const { signnUpWithGmail, login } = useContext(AuthContext);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // Redirection to specific page
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
+
+  const onSubmit = (data) => {
+    const email = data.email;
+    const password = data.password;
+    //  console.log(email, password);
+    login(email, password)
+      .then((result) => {
+        const user = result.user;
+        alert("Login Successfull");
+        document.getElementById("my_modal_5").close();
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        // const errorMessage = error.message;
+        setErrorMessage("provide a correct email and password");
+      });
+  };
+
+  const handleLogin = () => {
+    signnUpWithGmail()
+      .then((result) => {
+        const user = result.user;
+        alert("Login Successfull");
+        navigate(from, { replace: true });
+        document.getElementById("my_modal_5").close();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div>
       <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">
@@ -55,6 +92,11 @@ const Modal = () => {
                 </label> */}
               </div>
               {/* Error */}
+              {errorMessage ? (
+                <p className="text-red-500 text-xs italic">{errorMessage}</p>
+              ) : (
+                ""
+              )}
 
               {/* Login Btn */}
               <div className="form-control mt-6">
@@ -72,9 +114,7 @@ const Modal = () => {
               </p>
               <button
                 htmlFor="my_modal_5"
-                onClick={() =>
-                  document.getElementById("my_modal_5").close()
-                }
+                onClick={() => document.getElementById("my_modal_5").close()}
                 className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
               >
                 ✕
@@ -82,7 +122,10 @@ const Modal = () => {
             </form>
 
             <div className="flex gap-5">
-              <button className="btn btn-circle hover:bg-primary hover:text-white">
+              <button
+                className="btn btn-circle hover:bg-primary hover:text-white"
+                onClick={handleLogin}
+              >
                 <FaGoogle />
               </button>
               <button className="btn btn-circle hover:bg-primary hover:text-white">
