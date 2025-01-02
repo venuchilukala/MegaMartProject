@@ -6,6 +6,7 @@ import Cards from "../components/Cards";
 import StoreItems from "../pages/shop/StoreItems";
 import Signup from "../components/Signup";
 import PrivateRouter from "../privaterouter/PrivateRouter";
+import UpdateProfile from "../pages/dashboard/UpdateProfile";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
           </PrivateRouter>
         ),
       },
+      {
+        path : "/update-profile",
+        element : <UpdateProfile/>
+      }
     ],
   },
   {

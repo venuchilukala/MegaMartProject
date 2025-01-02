@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
   };
 
   // Update user profile
-  const updateUserProfile = ({ name, photoURL }) => {
+  const updateUserProfile = (name, photoURL) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
       photoURL: photoURL,
@@ -55,7 +55,7 @@ const AuthProvider = ({ children }) => {
       console.log("Firebase currentUser:", currentUser);
       if (currentUser) {
         setUser(currentUser);
-      } 
+      }
       setLoading(false);
     });
     return () => {
