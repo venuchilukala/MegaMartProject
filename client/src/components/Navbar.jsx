@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import logo from "/logo.png";
+import { FaRegUser } from "react-icons/fa";
+import Modal from "./Modal";
 
 const Navbar = () => {
-  const [isSticky, setSticky] = useState(false)
+  const [isSticky, setSticky] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,7 +83,13 @@ const Navbar = () => {
   );
   return (
     <header className="h-16 max-w-screen-2xl container mx-auto fixed left-0 right-0 transition-all duration-300 ease-in-out">
-      <div className={`navbar xl:px-5 ${isSticky ? "shadow-md bg-blue-100 transition-all duration-300 ease-in-out" : ""}`}>
+      <div
+        className={`navbar xl:px-5 ${
+          isSticky
+            ? "shadow-md bg-blue-100 transition-all duration-300 ease-in-out"
+            : ""
+        }`}
+      >
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -140,6 +148,14 @@ const Navbar = () => {
             </div>
           </div>
 
+          {/* Login button */}
+          <button
+            onClick={() => document.getElementById("my_modal_5").showModal()}
+            className="btn flex items-center gap-2 rounded-full px-6 bg-gray-400 text-white"
+          >
+            <FaRegUser />
+          </button>
+          <Modal/>
           {/* Profile icon */}
           <div>
             <div className="drawer drawer-end z-10">
