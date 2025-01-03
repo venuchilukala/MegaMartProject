@@ -37,7 +37,7 @@ const Toppicks = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("/products.json");
+      const response = await fetch("http://localhost:6001/product");
       const data = await response.json();
       console.log(data);
       setProducts(data);

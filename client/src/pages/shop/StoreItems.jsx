@@ -11,7 +11,7 @@ const StoreItems = () => {
 
   useEffect(() => {
     const getProductsData = async () => {
-      const response = await fetch("/products.json");
+      const response = await fetch("http://localhost:6001/product");
       const data = await response.json();
       setProducts(data);
       console.log(data);

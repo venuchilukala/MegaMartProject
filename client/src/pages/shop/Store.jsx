@@ -6,7 +6,7 @@ const Store = () => {
 
   useEffect(() => {
     const getStoresData = async () => {
-      const response = await fetch("/stores.json");
+      const response = await fetch("http://localhost:6001/store");
       const data = await response.json();
       console.log(data);
       setStores(data)

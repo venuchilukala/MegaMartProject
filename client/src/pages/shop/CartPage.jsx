@@ -146,7 +146,7 @@ const CartPage = () => {
                   </div>
                 </td>
                 <td>Name of product</td>
-                <td>$0{calculatePrice("item").toFixed(2)}</td>
+                <td>$0{calculatePrice("item")}</td>
                 <td>
                   <button
                     className="btn btn-xs"

@@ -6,7 +6,8 @@ import Swal from "sweetalert2";
 
 const Cards = (props) => {
   const { product } = props;
-  const { _id, name, description } = product;
+  const { _id, name, price, discountPrice, isOnOffer, brand, stock, category, store, image, createdAt} = product;
+
 
   const [isFavourite, setFavourite] = useState(false);
   const { user } = useContext(AuthContext);
@@ -79,7 +80,8 @@ const Cards = (props) => {
       <Link>
         <figure>
           <img
-            src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+            // src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+            src={image}
             alt="Shoes"
             className="hover:scale-105 transition-all duration-200"
           />
@@ -89,7 +91,7 @@ const Cards = (props) => {
         <Link>
           <h2 className="card-title">{name}</h2>
         </Link>
-        <p>{description}</p>
+        <p>{price}</p>
         <div className="card-actions justify-end">
           <button
             className="btn btn-primary"

@@ -1,0 +1,80 @@
+[
+    {
+      "name": "Footwear Haven",
+      "location": "Mall Level 1, City Center",
+      "category": "Footwear",
+      "products": [
+        "63e59f6fa27c9a1b1c6e1b68", 
+        "63e59f6fa27c9a1b1c6e1b69",
+        "63e59f6fa27c9a1b1c6e1b70",
+        "63e59f6fa27c9a1b1c6e1b71",
+        "63e59f6fa27c9a1b1c6e1b72",
+        "63e59f6fa27c9a1b1c6e1b73",
+        "63e59f6fa27c9a1b1c6e1b74",
+        "63e59f6fa27c9a1b1c6e1b75",
+        "63e59f6fa27c9a1b1c6e1b76",
+        "63e59f6fa27c9a1b1c6e1b77"
+      ],
+      "bannerImage": "/storeBanner.jpg",
+      "iconImage": "/storeIcon.jpg",
+      "floor": 1,
+      "contact": "+1-555-1010",
+      "createdAt": "2025-01-03T00:00:00Z"
+    },
+    {
+      "name": "Gadget Galaxy",
+      "location": "Mall Level 2, City Center",
+      "category": "Electronics",
+      "products": [],
+      "bannerImage": "/storeBanner.jpg",
+      "iconImage": "/storeIcon.jpg",
+      "floor": 2,
+      "contact": "+1-555-2020",
+      "createdAt": "2025-01-03T00:00:00Z"
+    },
+    {
+      "name": "Fashion Fusion",
+      "location": "Mall Level 1, City Center",
+      "category": "Fashion",
+      "products": [],
+      "bannerImage": "/storeBanner.jpg",
+      "iconImage": "/storeIcon.jpg",
+      "floor": 1,
+      "contact": "+1-555-3030",
+      "createdAt": "2025-01-03T00:00:00Z"
+    },
+    {
+      "name": "Home Essentials",
+      "location": "Mall Level 3, City Center",
+      "category": "Home Decor",
+      "products": [],
+      "bannerImage": "/storeBanner.jpg",
+      "iconImage": "/storeIcon.jpg",
+      "floor": 3,
+      "contact": "+1-555-4040",
+      "createdAt": "2025-01-03T00:00:00Z"
+    },
+    {
+      "name": "Beauty Bliss",
+      "location": "Mall Level 1, City Center",
+      "category": "Beauty",
+      "products": [],
+      "bannerImage": "/storeBanner.jpg",
+      "iconImage": "/storeIcon.jpg",
+      "floor": 1,
+      "contact": "+1-555-5050",
+      "createdAt": "2025-01-03T00:00:00Z"
+    },
+    {
+      "name": "Sports Superstore",
+      "location": "Mall Level 2, City Center",
+      "category": "Sports",
+      "products": [],
+      "bannerImage": "/storeBanner.jpg",
+      "iconImage": "/storeIcon.jpg",
+      "floor": 2,
+      "contact": "+1-555-6060",
+      "createdAt": "2025-01-03T00:00:00Z"
+    }
+  ]
+  
