@@ -21,10 +21,13 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD
 const productRoutes = require('./api/routes/productRoutes');
 const storeRoutes = require('./api/routes/storeRoutes');
 const cartRoutes = require('./api/routes/cartRoutes')
+const userRoutes = require('./api/routes/userRoutes')
 
-app.use('/product', productRoutes)
-app.use('/store', storeRoutes)
-app.use('/cart', cartRoutes)
+app.use('/products', productRoutes)
+app.use('/stores', storeRoutes)
+app.use('/carts', cartRoutes)
+app.use('/users', userRoutes)
+
 
 app.get('/', (req, res) => {
     res.send("Hello World")
