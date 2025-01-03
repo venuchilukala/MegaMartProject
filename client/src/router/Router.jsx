@@ -7,6 +7,7 @@ import StoreItems from "../pages/shop/StoreItems";
 import Signup from "../components/Signup";
 import PrivateRouter from "../privaterouter/PrivateRouter";
 import UpdateProfile from "../pages/dashboard/UpdateProfile";
+import CartPage from "../pages/shop/CartPage";
 
 const router = createBrowserRouter([
   {
@@ -19,24 +20,20 @@ const router = createBrowserRouter([
       },
       {
         path: "/store",
-        element: (
-          <PrivateRouter>
-            <Store />
-          </PrivateRouter>
-        ),
+        element: <Store />,
       },
       {
         path: "/store/:id",
-        element: (
-          <PrivateRouter>
-            <StoreItems />
-          </PrivateRouter>
-        ),
+        element: <StoreItems />,
       },
       {
-        path : "/update-profile",
-        element : <UpdateProfile/>
-      }
+        path : "/cart-page",
+        element : <CartPage/>
+      },
+      {
+        path: "/update-profile",
+        element: <UpdateProfile />,
+      },
     ],
   },
   {
@@ -45,7 +42,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <div>404 - Page Not Found</div>, // Replace with a custom 404 component
+    element: <div>404 - Page Not Found</div>,
   },
 ]);
 

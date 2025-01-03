@@ -8,15 +8,15 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 const Main = () => {
   const { loading } = useContext(AuthContext);
-  
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div>
       {loading ? (
-        <LoadingSpinner/>
+        <LoadingSpinner />
       ) : (
         <>
           <Navbar />
-          <div className="flex-grow pt-16">
+          <div className="min-h-screen pt-16">
             <Outlet />
           </div>
           <Footer />

@@ -1,15 +1,69 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
+import { AuthContext } from "../contexts/AuthProvider";
+import Swal from "sweetalert2";
 
 const Cards = (props) => {
   const { product } = props;
-  const { name, description } = product;
+  const { _id, name, description } = product;
 
   const [isFavourite, setFavourite] = useState(false);
+  const { user } = useContext(AuthContext);
+
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const handleFavouriteClick = () => {
     setFavourite(!isFavourite);
+  };
+
+  const handleAddToCart = (product) => {
+    if (user && user?.email) {
+      const cartItem = {
+        productId: _id,
+        name,
+        description,
+        quantity: 1,
+        email: user.email,
+      };
+
+      const options = {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(cartItem),
+      };
+
+      fetch("http://localhost:6001/carts", options)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.insertedId) {
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Your work has been saved",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        });
+    } else {
+      Swal.fire({
+        title: "Please Login?",
+        text: "Without an account you can't add products to cart!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Signup Now!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/signup', {state: {from : location}})
+        }
+      });
+    }
   };
 
   return (
@@ -32,10 +86,17 @@ const Cards = (props) => {
         </figure>
       </Link>
       <div className="card-body">
-        <Link><h2 className="card-title">{name}</h2></Link>
+        <Link>
+          <h2 className="card-title">{name}</h2>
+        </Link>
         <p>{description}</p>
         <div className="card-actions justify-end">
-          <button className="btn btn-primary">Buy Now</button>
+          <button
+            className="btn btn-primary"
+            onClick={() => handleAddToCart(product)}
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>
