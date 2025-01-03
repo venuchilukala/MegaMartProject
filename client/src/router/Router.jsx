@@ -8,6 +8,10 @@ import Signup from "../components/Signup";
 import PrivateRouter from "../privaterouter/PrivateRouter";
 import UpdateProfile from "../pages/dashboard/UpdateProfile";
 import CartPage from "../pages/shop/CartPage";
+import DashBoardLayout from "../layout/DashBoardLayout";
+import DashBoard from "../pages/dashboard/DashBoard";
+import Users from "../pages/dashboard/Users";
+import NotFound from "../components/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -27,8 +31,8 @@ const router = createBrowserRouter([
         element: <StoreItems />,
       },
       {
-        path : "/cart-page",
-        element : <CartPage/>
+        path: "/cart-page",
+        element: <CartPage />,
       },
       {
         path: "/update-profile",
@@ -41,8 +45,22 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
   {
+    path: "/dashboard",
+    element: <DashBoardLayout />,
+    children: [
+      {
+        path: "",
+        element: <DashBoard />,
+      },
+      {
+        path : "users",
+        element : <Users/>
+      }
+    ],
+  },
+  {
     path: "*",
-    element: <div>404 - Page Not Found</div>,
+    element: <NotFound/>,
   },
 ]);
 
