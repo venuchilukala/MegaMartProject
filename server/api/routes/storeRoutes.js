@@ -5,5 +5,6 @@ const storeController = require('../controllers/storeController')
 
 // Get all products 
 router.get('/', storeController.getAllStores)
+router.get('/:id', storeController.getStore)
 
 module.exports = router

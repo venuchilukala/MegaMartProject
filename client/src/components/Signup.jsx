@@ -5,6 +5,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { set, useForm } from "react-hook-form";
 import Modal from "./Modal";
 import { AuthContext } from "../contexts/AuthProvider";
+import axios from "axios";
 
 const Signup = () => {
   const {
@@ -13,8 +14,9 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
 
-  const { createUser, signnUpWithGmail } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = useState("");
+  const { createUser, signnUpWithGmail, updateUserProfile } =
+    useContext(AuthContext);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,8 +29,16 @@ const Signup = () => {
     createUser(email, password)
       .then((result) => {
         const user = result.user;
-        alert("Account creation done Successfully");
-        navigate(from, { replace: true });
+        updateUserProfile(data.name, data.photoURL).then(() => {
+          const userInfo = {
+            name: data.name,
+            email: data.email,
+          };
+          axios.post("http://localhost:6001/users", userInfo).then(() => {
+            alert("Signin done Successfully");
+            navigate(from, { replace: true });
+          });
+        });
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -40,9 +50,15 @@ const Signup = () => {
     signnUpWithGmail()
       .then((result) => {
         const user = result.user;
-        alert("Login Successfull");
-        navigate(from, { replace: true });
-        document.getElementById("my_modal_5").close();
+        const userInfo = {
+          name: result?.user?.displayName,
+          email: result?.user?.email,
+        };
+        axios.post("http://localhost:6001/users", userInfo).then(() => {
+          alert("Signin done Successfully");
+          navigate("/");
+          document.getElementById("my_modal_5").close();
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -58,6 +74,19 @@ const Signup = () => {
           method="dialog"
         >
           <h3 className="font-bold text-lg">Create an account!</h3>
+
+          {/* Name */}
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Name</span>
+            </label>
+            <input
+              type="name"
+              placeholder="name"
+              className="input input-bordered"
+              {...register("name")}
+            />
+          </div>
 
           {/* Email */}
           <div className="form-control">
@@ -88,7 +117,9 @@ const Signup = () => {
                     Forgot password?
                   </a>
                 </label> */}
+
           </div>
+          
           {/* Error */}
 
           {errorMessage ? (

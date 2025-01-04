@@ -5,31 +5,6 @@ import Slider from "react-slick";
 import Cards from "../../components/Cards";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
-// const simpleNextArrow = (props) => {
-//   const { className, style, onClick } = props;
-//   return (
-//     <div
-//       className={className}
-//       style={{ ...style, display: "block", background: "red" }}
-//       onClick={onClick}
-//     >
-//       NEXT
-//     </div>
-//   );
-// };
-
-// const simplePrevArrow = (props) => {
-//   const { className, style, onClick } = props;
-//   return (
-//     <div
-//       className={className}
-//       style={{ ...style, display: "block", background: "green" }}
-//       onClick={onClick}
-//     >
-//       PREV
-//     </div>
-//   );
-// };
 
 const Toppicks = () => {
   const [products, setProducts] = useState([]);
@@ -37,9 +12,8 @@ const Toppicks = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://localhost:6001/product");
+      const response = await fetch("http://localhost:6001/products");
       const data = await response.json();
-      console.log(data);
       setProducts(data);
     };
     fetchData();
@@ -78,11 +52,8 @@ const Toppicks = () => {
         },
       },
     ],
-
-    // nextArrow: <simpleNextArrow />,
-    // prevArrow: <simplePrevArrow />,
   };
-  console.log(products);
+ 
   return (
     <div className="px-24 relative">
       <div className="">

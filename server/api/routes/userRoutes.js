@@ -4,6 +4,7 @@ const userController = require('../controllers/userController');
 const verifyToken = require('../middlewares/verifyToken');
 
 router.get('/' ,userController.getAllUsers);
+router.get('/:email' ,userController.getUser);
 router.post('/', userController.creteUser);
 router.delete('/:id', userController.deleteUser)
 router.get('/admin/:email', userController.getAdmin)

@@ -10,6 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
+import axios from 'axios'
 
 export const AuthContext = createContext();
 const auth = getAuth(app);
@@ -55,6 +56,15 @@ const AuthProvider = ({ children }) => {
       // console.log("Firebase currentUser:", currentUser);
       if (currentUser) {
         setUser(currentUser);
+        const userInfo = {email : currentUser.email}
+        axios.post('http://localhost:6001/jwt', userInfo).then((response)=> {
+          // console.log(response.data.jwt_token)
+          if(response.data.jwt_token){
+            localStorage.setItem("jwt-token", response.data.jwt_token)
+          }
+        })
+      }else{
+        localStorage.removeItem("jwt-token")
       }
       setLoading(false);
     });

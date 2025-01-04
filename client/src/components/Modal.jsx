@@ -4,6 +4,7 @@ import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthProvider";
+import axios from "axios";
 
 const Modal = () => {
   const {
@@ -27,29 +28,41 @@ const Modal = () => {
     login(email, password)
       .then((result) => {
         const user = result.user;
-        alert("Login Successfull");
-        document.getElementById("my_modal_5").close();
-        navigate(from, { replace: true });
+        const userInfo = {
+          name: data.email,
+          email: data.email,
+        };
+        axios.post("http://localhost:6001/users", userInfo).then((response) => {
+          alert("Login successful!");
+          document.getElementById("my_modal_5").close();
+          navigate(from , {replace : true});
+        });
       })
       .catch((error) => {
-        // const errorMessage = error.message;
-        setErrorMessage("provide a correct email and password");
+        const errorMessage = error.message;
+        setErrorMessage("Please provide valid email & password!");
       });
   };
 
   const handleLogin = () => {
-    signnUpWithGmail()
+      signnUpWithGmail()
       .then((result) => {
         const user = result.user;
-        alert("Login Successfull");
-        navigate(from, { replace: true });
-        document.getElementById("my_modal_5").close();
+        const userInfo = {
+          name: result?.user?.displayName,
+          email: result?.user?.email,
+        };
+        axios.post("http://localhost:6001/users", userInfo).then(() => {
+          alert("Login done Successfully");
+          navigate("/");
+          document.getElementById("my_modal_5").close();
+        });
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  
+
   return (
     <div>
       <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">

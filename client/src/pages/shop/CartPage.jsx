@@ -1,77 +1,107 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import useCart from "../../hooks/useCart";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../contexts/AuthProvider";
 
 const CartPage = () => {
-  const [cart, refetch] = useCart();
+  const [cart, refetch] = useCart(); // Assume this fetches { products: [{ id, quantity }], email }
   const { user } = useContext(AuthContext);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]); // To store enriched product details
 
-  // Calculate Price
+  console.log(cartItems);
+
+  // Fetch product details
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      const productDetails = await Promise.all(
+        cart.products.map(async (item) => {
+          const res = await fetch(
+            `http://localhost:6001/products/${item.product}`
+          );
+          const productData = await res.json();
+          return {
+            ...productData, // Add fetched product details
+            quantity: item.quantity, // Include quantity from the cart
+          };
+        })
+      );
+      setCartItems(productDetails);
+    };
+
+    if (cart.products) {
+      fetchProductDetails();
+    }
+  }, [cart]);
+
   const calculatePrice = (item) => {
-    // return item.price * item.quantity
+    return item.price * item.quantity;
   };
 
-  // Calculate total price
-  const calculateSubTotal = cartItems.reduce((total, item)=>{
-    // return total + calculatePrice(item)
-  },0)
+  const calculateSubTotal = cartItems.reduce(
+    (total, item) => total + calculatePrice(item),
+    0
+  );
 
-  // handleIncrease
-  const handleIncrease = (item) => {
-    fetch(`http://localhost:6001/carts/${"45521"}`, {
-      method: "PUT",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-      body: JSON.stringify({ quantity: item.quantity + 1 }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const updatedCart = cartItems.map((cartItem) => {
-          if (cartItem.id === item.id) {
-            return {
-              ...cartItem,
-              quantity: cartItem.quantity + 1,
-            };
-          }
-          return cartItem;
-        });
-        refetch();
-        setCartItems(updatedCart);
-      });
-    refetch();
-  };
-
-  // handleDecrease
-  const handleDecrease = (item) => {
-    if (item.quantity > 1) {
-      fetch(`http://localhost:6001/carts/${"45521"}`, {
-        method: "PUT",
+  const handleIncrease = async (item) => {
+    try {
+      const updatedQty = {
+        productId: item._id,
+        quantity: -1,
+        email: cart.email,
+      };
+      console.log("Clicked prod", updatedQty);
+      await fetch(`http://localhost:6001/carts?email=${cart.email}`, {
+        method: "POST",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
-        body: JSON.stringify({ quantity: item.quantity - 1 }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          const updatedCart = cartItems.map((cartItem) => {
-            if (cartItem.id === item.id) {
-              return {
-                ...cartItem,
-                quantity: cartItem.quantity - 1,
-              };
-            }
-            return cartItem;
-          });
-          refetch();
-          setCartItems(updatedCart);
-        });
+        body: JSON.stringify(updatedQty),
+      });
+
+      const updatedCart = cartItems.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem
+      );
+      setCartItems(updatedCart);
       refetch();
+    } catch (error) {
+      console.error("Error increasing item quantity:", error);
+    }
+  };
+
+  const handleDecrease = async (item) => {
+    // console.log(item);
+    if (item.quantity > 1) {
+      try {
+        const updatedQty = {
+          productId: item._id,
+          quantity: -1,
+          email: cart.email,
+        };
+        console.log("Clicked prod", updatedQty);
+
+        await fetch(`http://localhost:6001/carts?email=${cart.email}`, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+          body: JSON.stringify(updatedQty),
+        });
+
+        const updatedCart = cartItems.map((cartItem) =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity - 1 }
+            : cartItem
+        );
+        setCartItems(updatedCart);
+        refetch();
+      } catch (error) {
+        console.error("Error decreasing item quantity:", error);
+      }
     } else {
-      alert("Item can't be lessthan zero");
+      alert("Item quantity can't be less than 1");
     }
   };
 
@@ -84,29 +114,36 @@ const CartPage = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:6001/${"jskdj"}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.deletedCount > 0) {
-              refetch();
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success",
-              });
-            }
+        try {
+          const res = await fetch(`http://localhost:6001/carts/${item.id}`, {
+            method: "DELETE",
           });
+
+          const data = await res.json();
+          if (data.deletedCount > 0) {
+            const updatedCart = cartItems.filter(
+              (cartItem) => cartItem.id !== item.id
+            );
+            setCartItems(updatedCart);
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your item has been removed.",
+              icon: "success",
+            });
+          }
+        } catch (error) {
+          console.error("Error deleting item:", error);
+        }
       }
     });
   };
 
   return (
     <div className="section-container">
-      <div className="min-h-screen  xl:px-24 bg-gradient-to-r from-0% from-[#FAFAFA] to-[#FCFCFC] to-100%">
+      <div className="min-h-screen xl:px-24 bg-gradient-to-r from-0% from-[#FAFAFA] to-[#FCFCFC] to-100%">
         <div className="py-14 flex flex-col items-center justify-center gap-8">
           <div className="px-4 space-y-7">
             <h2 className="md:text-4xl font-bold md:leading-snug leading-snug">
@@ -115,10 +152,8 @@ const CartPage = () => {
           </div>
         </div>
 
-        {/* Cart table */}
         <div className="overflow-x-auto">
           <table className="table">
-            {/* head */}
             <thead className="bg-primary text-white">
               <tr>
                 <th>#</th>
@@ -130,69 +165,65 @@ const CartPage = () => {
               </tr>
             </thead>
             <tbody>
-              {/* row 1 */}
-              <tr>
-                <td>1</td>
-                <td>
-                  <div className="flex items-center gap-3">
-                    <div className="avatar">
-                      <div className="mask mask-squircle h-12 w-12">
-                        <img
-                          src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                          alt="Avatar Tailwind CSS Component"
-                        />
+              {cartItems.map((item, index) => (
+                <tr key={item.id}>
+                  <td>{index + 1}</td>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle h-12 w-12">
+                          <img src={item.imageUrl} alt={item.name} />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td>Name of product</td>
-                <td>$0{calculatePrice("item")}</td>
-                <td>
-                  <button
-                    className="btn btn-xs"
-                    onClick={() => handleDecrease("item")}
-                  >
-                    -
-                  </button>
-                  <input
-                    type="number"
-                    value="0"
-                    onChange={() => console.log("object")}
-                    className="w-10 mx-2 text-center overflow-hidden appearance-none"
-                  />
-                  <button
-                    className="btn btn-xs"
-                    onClick={() => handleIncrease("item")}
-                  >
-                    +
-                  </button>
-                </td>
-                <th>
-                  <button
-                    className="btn btn-ghost btn-sm text-red-500"
-                    onClick={() => handleDelete("item")}
-                  >
-                    <FaTrash />
-                  </button>
-                </th>
-              </tr>
+                  </td>
+                  <td>{item.name}</td>
+                  <td>${calculatePrice(item).toFixed(2)}</td>
+                  <td>
+                    <button
+                      className="btn btn-xs"
+                      onClick={() => handleDecrease(item)}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      readOnly
+                      className="w-10 mx-2 text-center"
+                    />
+                    <button
+                      className="btn btn-xs"
+                      onClick={() => handleIncrease(item)}
+                    >
+                      +
+                    </button>
+                  </td>
+                  <th>
+                    <button
+                      className="btn btn-ghost btn-sm text-red-500"
+                      onClick={() => handleDelete(item)}
+                    >
+                      <FaTrash />
+                    </button>
+                  </th>
+                </tr>
+              ))}
             </tbody>
-            {/* foot */}
           </table>
         </div>
 
-        {/* customer details */}
         <div className="my-12 flex flex-col md:flex-row justify-between items-start">
           <div className="md:w-1/2 space-y-3">
             <h3 className="font-medium">Customer Details</h3>
-            <p>Name : {user.displayName}</p>
+            <p>Name : {user.displayName || user.name}</p>
             <p>Email : {user.email}</p>
-            <p>User id : {user.uid}</p>
+            <p>User ID : {user.uid}</p>
           </div>
           <div>
             <h3 className="font-medium">Shopping Details</h3>
-            <p>Total Items : {cart.length}</p>
-            <p>Total Price : 200.00</p>
+            <p>Total Items : {cartItems.length || 0}</p>
+            <p>Total Price : ${calculateSubTotal.toFixed(2)}</p>
             <button className="btn btn-md btn-primary text-white">
               Proceed Checkout
             </button>

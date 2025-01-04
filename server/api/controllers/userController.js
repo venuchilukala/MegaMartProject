@@ -10,6 +10,21 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+// Get user by email 
+const getUser = async (req, res) => {
+    try {
+        const email = req.params.email; // Extract email from query parameters
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found!" });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 // Create a new user 
 const creteUser = async (req, res) => {
     try {
@@ -109,6 +124,7 @@ const changeUserRole = async (req, res) => {
 
 module.exports = {
     getAllUsers,
+    getUser,
     creteUser,
     deleteUser,
     getAdmin,
