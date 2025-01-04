@@ -1,16 +1,14 @@
-import React, {useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaGoogle, FaInstagram } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { AuthContext } from "../contexts/AuthProvider";
-import axios from "axios";
-// import useAxiosPublic from "../hooks/useAxiosPublic";
-// import useAuth from "../hooks/useAuth";
+import useAxiosPublic from "../hooks/useAxiosPublic";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const [errorMessage, seterrorMessage] = useState("");
-  const { signUpWithGmail, login } = useContext(AuthContext);
-//   const axiosPublic = useAxiosPublic();
+  const { signUpWithGmail, login } = useAuth();
+  const axiosPublic = useAxiosPublic();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,17 +33,17 @@ const Login = () => {
           name: data.email,
           email: data.email,
         };
-        axios.post("http://localhost:6001/users", userInfo).then((response) => {
+        axiosPublic.post("/users", userInfo).then((response) => {
           alert("Login successful!");
-        //   document.getElementById("my_modal_5").close();
-          navigate(from , {replace : true});
+          //   document.getElementById("my_modal_5").close();
+          navigate(from, { replace: true });
+          reset();
         });
       })
       .catch((error) => {
         const errorMessage = error.message;
         seterrorMessage("Please provide valid email & password!");
       });
-    reset();
   };
 
   //login with google
@@ -57,16 +55,17 @@ const Login = () => {
           name: result?.user?.displayName,
           email: result?.user?.email,
         };
-        axios.post("http://localhost:6001/users", userInfo).then((response) => {
+        axiosPublic.post("/users", userInfo).then((response) => {
           alert("Login successful!");
-          document.getElementById("my_modal_5").close();
-          navigate("/");
+          // document.getElementById("my_modal_5").close();
+          navigate(from, { replace: true });
         });
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   return (
     <div className="max-w-md bg-white shadow w-full mx-auto flex items-center justify-center my-20">
       <div className="mb-5">

@@ -77,49 +77,36 @@ const getAdmin = async (req, res) => {
     }
 }
 
-// get storeOwner
-// const getStoreOwner = async (req, res) => {
-//     try {
-//         const email = req.params.email 
-//         const query = {email : email}
 
-//         const user = await User.findOne(query)
-//         if(email !== req.decoded.email){
-//             return res.status(403).json({message : "Forbidden Access"})
-//         }
-
-//         let storeOwner = false
-//         if(user){
-//             storeOwner = user?.role === "storeOwner"
-//         }
-//         res.status(200).json({storeOwner})
-
-//     } catch (error) {
-//         res.status(500).json({message : error.message})
-//     }
-// }
-
-// changeUserRole 
-const changeUserRole = async (req, res) => {
+// change status
+const changeUserRole = async (req, res) => { 
     try {
         const userId = req.params.id;
-        const {name, email, photoURL, role, cart} = req.body 
+        const { role } = req.body;
 
+        // Validate role input
+        const validRoles = ['customer', 'admin', 'storeOwner']; // Example roles
+        if (!validRoles.includes(role)) {
+            return res.status(400).json({ message: "Invalid role specified" });
+        }
+
+        // Update the user's role
         const updatedUser = await User.findByIdAndUpdate(
             userId,
-            {role : role},
-            {new : true , runValidators : true}
+            { role },
+            { new: true, runValidators: true }
         );
 
-        if(!updatedUser){
-            return res.status(404).json({message : "Usr not found"})
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
         }
-        res.status(200).json(updatedUser)
 
+        res.status(200).json({ message: "Role updated successfully", updatedUser });
     } catch (error) {
-        res.status(500).json({message : error.message})
+        res.status(500).json({ message: error.message });
     }
-}
+};
+
 
 
 module.exports = {

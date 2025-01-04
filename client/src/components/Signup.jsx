@@ -6,6 +6,7 @@ import { set, useForm } from "react-hook-form";
 import Modal from "./Modal";
 import { AuthContext } from "../contexts/AuthProvider";
 import axios from "axios";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 const Signup = () => {
   const {
@@ -16,7 +17,9 @@ const Signup = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
   const { createUser, signnUpWithGmail, updateUserProfile } =
-    useContext(AuthContext);
+    useContext(AuthContext); 
+
+  const axiosPublic = useAxiosPublic()
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -34,7 +37,7 @@ const Signup = () => {
             name: data.name,
             email: data.email,
           };
-          axios.post("http://localhost:6001/users", userInfo).then(() => {
+          axiosPublic.post("/users", userInfo).then(() => {
             alert("Signin done Successfully");
             navigate(from, { replace: true });
           });
@@ -54,7 +57,7 @@ const Signup = () => {
           name: result?.user?.displayName,
           email: result?.user?.email,
         };
-        axios.post("http://localhost:6001/users", userInfo).then(() => {
+        axiosPublic.post("/users", userInfo).then(() => {
           alert("Signin done Successfully");
           navigate("/");
           document.getElementById("my_modal_5").close();
@@ -112,11 +115,6 @@ const Signup = () => {
               className="input input-bordered"
               {...register("password")}
             />
-            {/* <label className="label mt-1">
-                  <a href="#" className="label-text-alt link link-hover">
-                    Forgot password?
-                  </a>
-                </label> */}
 
           </div>
           
