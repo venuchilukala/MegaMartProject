@@ -19,7 +19,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  console.log("user in AuthProvider", user);
+  // console.log("user in AuthProvider", user);
 
   // Create an account
   const createUser = (email, password) => {
@@ -52,7 +52,7 @@ const AuthProvider = ({ children }) => {
   // check signed in user
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("Firebase currentUser:", currentUser);
+      // console.log("Firebase currentUser:", currentUser);
       if (currentUser) {
         setUser(currentUser);
       }

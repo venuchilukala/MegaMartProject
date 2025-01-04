@@ -112,6 +112,5 @@ module.exports = {
     creteUser,
     deleteUser,
     getAdmin,
-    getStoreOwner,
     changeUserRole,
 }

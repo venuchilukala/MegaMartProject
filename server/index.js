@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors')
 require('dotenv').config()
+const jwt = require('jsonwebtoken')
 
 const app = express()
 const port = process.env.PORT || 6001
@@ -17,11 +18,25 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD
     console.log("Error connecting to mongodb", error)
 });
 
+/******************************** JWT Token *******************************************************************/
+// Get jwt token by user credentials
+app.post('/jwt', async (req, res) => {
+    const user = req.body
+    const token = jwt.sign(user, process.env.SECRET_TOKEN, {
+        expiresIn: '1h'
+    })
+    res.send({ jwt_token: token })
+})
+
+
+
+
 /************************Import Routes Here************************************ */
 const productRoutes = require('./api/routes/productRoutes');
 const storeRoutes = require('./api/routes/storeRoutes');
 const cartRoutes = require('./api/routes/cartRoutes')
-const userRoutes = require('./api/routes/userRoutes')
+const userRoutes = require('./api/routes/userRoutes');
+const verifyToken = require('./api/middlewares/verifyToken');
 
 app.use('/products', productRoutes)
 app.use('/stores', storeRoutes)
@@ -29,7 +44,7 @@ app.use('/carts', cartRoutes)
 app.use('/users', userRoutes)
 
 
-app.get('/', (req, res) => {
+app.get('/',verifyToken ,(req, res) => {
     res.send("Hello World")
 })
 
