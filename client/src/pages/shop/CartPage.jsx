@@ -29,7 +29,7 @@ const CartPage = () => {
       setCartItems(productDetails);
     };
 
-    if (cart.products) {
+    if (cart?.products) {
       fetchProductDetails();
     }
   }, [cart]);
@@ -43,69 +43,151 @@ const CartPage = () => {
     0
   );
 
+  // const handleIncrease = async (item) => {
+  //   try {
+  //     const updatedQty = {
+  //       productId: item._id,
+  //       quantity: -1,
+  //       email: cart.email,
+  //     };
+  //     console.log("Clicked prod", updatedQty);
+  //     await fetch(`http://localhost:6001/carts?email=${cart.email}`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-type": "application/json; charset=UTF-8",
+  //       },
+  //       body: JSON.stringify(updatedQty),
+  //     });
+
+  //     const updatedCart = cartItems.map((cartItem) =>
+  //       cartItem.id === item.id
+  //         ? { ...cartItem, quantity: cartItem.quantity + 1 }
+  //         : cartItem
+  //     );
+  //     setCartItems(updatedCart);
+  //     refetch();
+  //   } catch (error) {
+  //     console.error("Error increasing item quantity:", error);
+  //   }
+  // };
+
   const handleIncrease = async (item) => {
     try {
-      const updatedQty = {
-        productId: item._id,
-        quantity: -1,
-        email: cart.email,
-      };
-      console.log("Clicked prod", updatedQty);
-      await fetch(`http://localhost:6001/carts?email=${cart.email}`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-        body: JSON.stringify(updatedQty),
-      });
-
-      const updatedCart = cartItems.map((cartItem) =>
-        cartItem.id === item.id
-          ? { ...cartItem, quantity: cartItem.quantity + 1 }
-          : cartItem
-      );
-      setCartItems(updatedCart);
-      refetch();
-    } catch (error) {
-      console.error("Error increasing item quantity:", error);
-    }
-  };
-
-  const handleDecrease = async (item) => {
-    // console.log(item);
-    if (item.quantity > 1) {
-      try {
+        // Send the updated quantity (positive for increase, negative for decrease)
         const updatedQty = {
-          productId: item._id,
-          quantity: -1,
-          email: cart.email,
+            productId: item._id,
+            quantity: 1, // Increase by 1
+            email: cart.email, 
         };
+
         console.log("Clicked prod", updatedQty);
 
-        await fetch(`http://localhost:6001/carts?email=${cart.email}`, {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-          body: JSON.stringify(updatedQty),
+        // Send the request to update the quantity in the cart
+        const response = await fetch(`http://localhost:6001/carts`, {
+            method: "POST", // or "PUT" depending on your approach
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+            },
+            body: JSON.stringify(updatedQty),
         });
 
+        if (!response.ok) {
+            throw new Error('Failed to update quantity');
+        }
+
+        // Update the UI with the new cart data
         const updatedCart = cartItems.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity - 1 }
-            : cartItem
+            cartItem.id === item.id
+                ? { ...cartItem, quantity: cartItem.quantity + 1 }
+                : cartItem
         );
         setCartItems(updatedCart);
-        refetch();
-      } catch (error) {
-        console.error("Error decreasing item quantity:", error);
-      }
-    } else {
-      alert("Item quantity can't be less than 1");
-    }
-  };
 
+        // Optionally refetch the updated cart if needed
+        refetch();
+    } catch (error) {
+        console.error("Error increasing item quantity:", error);
+    }
+};
+
+
+  // const handleDecrease = async (item) => {
+  //   // console.log(item);
+  //   if (item.quantity > 1) {
+  //     try {
+  //       const updatedQty = {
+  //         productId: item._id,
+  //         quantity: -1,
+  //         email: cart.email,
+  //       };
+  //       console.log("Clicked prod", updatedQty);
+
+  //       await fetch(`http://localhost:6001/carts?email=${cart.email}`, {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-type": "application/json; charset=UTF-8",
+  //         },
+  //         body: JSON.stringify(updatedQty),
+  //       });
+
+  //       const updatedCart = cartItems.map((cartItem) =>
+  //         cartItem.id === item.id
+  //           ? { ...cartItem, quantity: cartItem.quantity - 1 }
+  //           : cartItem
+  //       );
+  //       setCartItems(updatedCart);
+  //       refetch();
+  //     } catch (error) {
+  //       console.error("Error decreasing item quantity:", error);
+  //     }
+  //   } else {
+  //     alert("Item quantity can't be less than 1");
+  //   }
+  // };
+
+  const handleDecrease = async (item) => {
+    try {
+        // Send the updated quantity (negative for decrease)
+        const updatedQty = {
+            productId: item._id,
+            quantity: -1, // Decrease by 1
+            email: cart.email, 
+        };
+
+        console.log("Clicked prod to decrease", updatedQty);
+
+        // Send the request to update the quantity in the cart
+        const response = await fetch(`http://localhost:6001/carts`, {
+            method: "POST", // or "PUT" depending on your approach
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+            },
+            body: JSON.stringify(updatedQty),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to decrease quantity');
+        }
+
+        // Update the UI with the new cart data (decrease quantity)
+        const updatedCart = cartItems.map((cartItem) =>
+            cartItem.id === item.id
+                ? { ...cartItem, quantity: cartItem.quantity - 1 }
+                : cartItem
+        );
+        setCartItems(updatedCart);
+
+        // Optionally refetch the updated cart if needed
+        refetch();
+    } catch (error) {
+        console.error("Error decreasing item quantity:", error);
+    }
+};
+
+
+  // delete a product
   const handleDelete = (item) => {
+    console.log(item)
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -117,7 +199,7 @@ const CartPage = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`http://localhost:6001/carts/${item.id}`, {
+          const res = await fetch(`http://localhost:6001/carts/${item._id}?email=${user?.email}`, {
             method: "DELETE",
           });
 
@@ -144,7 +226,7 @@ const CartPage = () => {
   return (
     <div className="section-container">
       <div className="min-h-screen xl:px-24 bg-gradient-to-r from-0% from-[#FAFAFA] to-[#FCFCFC] to-100%">
-        <div className="py-14 flex flex-col items-center justify-center gap-8">
+        <div className="py-8 flex flex-col items-center justify-center gap-8">
           <div className="px-4 space-y-7">
             <h2 className="md:text-4xl font-bold md:leading-snug leading-snug">
               Items in the Cart
@@ -172,13 +254,13 @@ const CartPage = () => {
                     <div className="flex items-center gap-3">
                       <div className="avatar">
                         <div className="mask mask-squircle h-12 w-12">
-                          <img src={item.imageUrl} alt={item.name} />
+                          <img src={item.image} alt={item.name} />
                         </div>
                       </div>
                     </div>
                   </td>
                   <td>{item.name}</td>
-                  <td>${calculatePrice(item).toFixed(2)}</td>
+                  <td>&#8377; {calculatePrice(item).toFixed(2)}</td>
                   <td>
                     <button
                       className="btn btn-xs"
@@ -216,14 +298,14 @@ const CartPage = () => {
         <div className="my-12 flex flex-col md:flex-row justify-between items-start">
           <div className="md:w-1/2 space-y-3">
             <h3 className="font-medium">Customer Details</h3>
-            <p>Name : {user.displayName || user.name}</p>
-            <p>Email : {user.email}</p>
-            <p>User ID : {user.uid}</p>
+            <p>Name : {user?.displayName || user?.name}</p>
+            <p>Email : {user?.email}</p>
+            <p>User ID : {user?.uid}</p>
           </div>
           <div>
             <h3 className="font-medium">Shopping Details</h3>
-            <p>Total Items : {cartItems.length || 0}</p>
-            <p>Total Price : ${calculateSubTotal.toFixed(2)}</p>
+            <p>Total Items : {cartItems?.length || 0}</p>
+            <p>Total Price : &#8377; {calculateSubTotal.toFixed(2)}</p>
             <button className="btn btn-md btn-primary text-white">
               Proceed Checkout
             </button>

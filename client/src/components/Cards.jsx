@@ -19,32 +19,37 @@ const Cards = (props) => {
     setFavourite(!isFavourite);
   };
 
+  // http://localhost:6001/carts
+  // {
+  //   "productId": "6777e2411de6b0da106d1a37", 
+  //   "quantity": 1, 
+  //   "email": "raj@gmail.com"
+  // }
   const handleAddToCart = (product) => {
+    console.log(product)
     if (user && user?.email) {
       const cartItem = {
         productId: _id,
-        name,
-        description,
-        quantity: 1,
+        quantity : 1,
         email: user.email,
       };
 
-      const options = {
+      console.log(cartItem)
+      fetch("http://localhost:6001/carts", {
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify(cartItem),
-      };
-
-      fetch("http://localhost:6001/carts", options)
+      })
         .then((res) => res.json())
         .then((data) => {
-          if (data.insertedId) {
+          console.log("data isd", data)
+          if (data) {
             Swal.fire({
-              position: "top-end",
+              position: "center",
               icon: "success",
-              title: "Your work has been saved",
+              title: "Item added to the cart",
               showConfirmButton: false,
               timer: 1500,
             });
