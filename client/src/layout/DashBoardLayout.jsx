@@ -92,13 +92,13 @@ const DashBoardLayout = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/">
+                <Link to="/dashboard/add-product">
                   <FaPlusCircle />
                   Add Product
                 </Link>
               </li>
               <li>
-                <Link to="/dashboard/">
+                <Link to="/dashboard/manage-product">
                   <FaEdit />
                   Manage Product
                 </Link>

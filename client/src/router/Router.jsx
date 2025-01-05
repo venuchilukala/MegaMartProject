@@ -9,10 +9,13 @@ import PrivateRouter from "../privaterouter/PrivateRouter";
 import UpdateProfile from "../pages/dashboard/UpdateProfile";
 import CartPage from "../pages/shop/CartPage";
 import DashBoardLayout from "../layout/DashBoardLayout";
-import DashBoard from "../pages/dashboard/DashBoard";
-import Users from "../pages/dashboard/Users";
+import DashBoard from "../pages/dashboard/admin/DashBoard";
+import Users from "../pages/dashboard/admin/Users";
 import NotFound from "../components/NotFound";
 import Login from "../components/Login";
+import AddProduct from "../pages/dashboard/admin/AddProduct";
+import ManageProduct from "../pages/dashboard/admin/ManageProduct";
+import UpdateProduct from "../pages/dashboard/admin/UpdateProduct";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +63,19 @@ const router = createBrowserRouter([
       {
         path : "users",
         element : <Users/>
+      },
+      {
+        path : "add-product",
+        element : <AddProduct/>
+      },
+      {
+        path: 'manage-product',
+        element: <ManageProduct/>
+      },
+      {
+        path : "update-product/:id",
+        element: <UpdateProduct/>,
+        loader : ({params}) => fetch(`http://localhost:6001/products/${params.id}`)
       }
     ],
   },

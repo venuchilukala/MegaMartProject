@@ -29,13 +29,17 @@ const productSchema = new Schema({
         type: String,
         required: true, // e.g., "Clothing", "Electronics"
     },
-    store: {
+    storeId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Store',
     },
     image: {
-        type: String, // URL of the image or file path
-        required: true, // Optional if not all products have images
+        type: String, 
+        required: true, 
+    },
+    description: {
+        type: String, 
+        required: true, 
     },
     createdAt: {
         type: Date,

@@ -78,7 +78,7 @@ const Toppicks = () => {
         </div>
       </div>
       <Slider ref={slider} {...settings} className="overflow-hidden mt-10 space-x-5">
-        {products.map((product, i) => (
+        {products?.map((product, i) => (
           <Cards key={i} product={product} />
         ))}
       </Slider>

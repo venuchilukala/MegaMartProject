@@ -39,23 +39,6 @@ const StoreItems = () => {
     setCurrentPage(1); // Reset pagination
   }, []);
 
-  // const [products, setProducts] = useState([]);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [itemsPerPage] = useState(8);
-
-  // const {id} = useParams()
-
-  // useEffect(() => {
-  //   const getProductsData = async () => {
-  //     const response = await fetch("http://localhost:6001/product");
-  //     const data = await response.json();
-  //     setProducts(data);
-  //     console.log(data);
-  //   };
-  //   getProductsData();
-  //   setCurrentPage(1);
-  // }, []);
-
   //Paginaton Logic is here
   const indexOfLastPage = currentPage * itemsPerPage;
   const indexOfFirstPage = indexOfLastPage - itemsPerPage;
