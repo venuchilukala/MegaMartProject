@@ -59,8 +59,8 @@ const Signup = () => {
         };
         axiosPublic.post("/users", userInfo).then(() => {
           alert("Signin done Successfully");
-          navigate("/");
           document.getElementById("my_modal_5").close();
+          navigate("/");
         });
       })
       .catch((error) => {

@@ -4,6 +4,7 @@ const cors = require('cors')
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const verifyToken = require('./api/middlewares/verifyToken');
 
 const app = express()
 const port = process.env.PORT || 6001
@@ -35,12 +36,13 @@ const productRoutes = require('./api/routes/productRoutes');
 const storeRoutes = require('./api/routes/storeRoutes');
 const cartRoutes = require('./api/routes/cartRoutes')
 const userRoutes = require('./api/routes/userRoutes');
-const verifyToken = require('./api/middlewares/verifyToken');
+const allStatsRoutes = require('./api/routes/allStatsRoutes')
 
 app.use('/products', productRoutes)
 app.use('/stores', storeRoutes)
 app.use('/carts', cartRoutes)
 app.use('/users', userRoutes)
+app.use('/admin-stats', allStatsRoutes)
 
 
 /***********************Stripe Payment **************************************** */
@@ -64,8 +66,8 @@ app.post("/create-checkout-session", async (req, res) => {
         payment_method_types:["card"],
         line_items:lineItems,
         mode:"payment",
-        success_url:`http://localhost:5173/success`,
-        cancel_url:`http://localhost:5173/failure`
+        success_url:`https://mega-mart-client.vercel.app/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url:`https://mega-mart-client.vercel.app/failure`
     })
     res.status(200).json({id : session.id})
 })

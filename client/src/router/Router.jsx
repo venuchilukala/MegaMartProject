@@ -11,13 +11,13 @@ import CartPage from "../pages/shop/CartPage";
 import DashBoardLayout from "../layout/DashBoardLayout";
 import DashBoard from "../pages/dashboard/admin/DashBoard";
 import Users from "../pages/dashboard/admin/Users";
-import NotFound from "../components/NotFound";
 import Login from "../components/Login";
 import AddProduct from "../pages/dashboard/admin/AddProduct";
 import ManageProduct from "../pages/dashboard/admin/ManageProduct";
 import UpdateProduct from "../pages/dashboard/admin/UpdateProduct";
 import PaymentSuccess from "../pages/shop/PaymentSuccess";
 import PaymentFailure from "../pages/shop/PaymentFailure";
+import PageNotFound from "../components/PageNotFound";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +38,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/cart-page",
-        element: <CartPage />,
+        element: (
+          <PrivateRouter>
+            <CartPage />
+          </PrivateRouter>
+        ),
       },
       {
         path: "/update-profile",
@@ -46,12 +50,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/success",
-        element: <PaymentSuccess/>
+        element: <PaymentSuccess />,
       },
       {
         path: "/failure",
-        element: <PaymentFailure/>
-      }
+        element: <PaymentFailure />,
+      },
     ],
   },
   {
@@ -86,13 +90,13 @@ const router = createBrowserRouter([
         path: "update-product/:id",
         element: <UpdateProduct />,
         loader: ({ params }) =>
-          fetch(`http://localhost:6001/products/${params.id}`),
+          fetch(`https://mega-mart-server.onrender.com/products/${params.id}`),
       },
     ],
   },
   {
     path: "*",
-    element: <NotFound />,
+    element: <PageNotFound />,
   },
 ]);
 

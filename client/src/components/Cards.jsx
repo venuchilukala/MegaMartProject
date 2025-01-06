@@ -3,11 +3,13 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { AuthContext } from "../contexts/AuthProvider";
 import Swal from "sweetalert2";
+import useCart from "../hooks/useCart";
 
 const Cards = (props) => {
   const { product } = props;
   const { _id, name, price, discountPrice, isOnOffer, brand, stock, category, store, image, createdAt} = product;
 
+  const [cart, refetch] = useCart()
 
   const [isFavourite, setFavourite] = useState(false);
   const { user } = useContext(AuthContext);
@@ -19,7 +21,7 @@ const Cards = (props) => {
     setFavourite(!isFavourite);
   };
 
-  // http://localhost:6001/carts
+  // https://mega-mart-server.onrender.com/carts
   // {
   //   "productId": "6777e2411de6b0da106d1a37", 
   //   "quantity": 1, 
@@ -35,7 +37,7 @@ const Cards = (props) => {
       };
 
       console.log(cartItem)
-      fetch("http://localhost:6001/carts", {
+      fetch("https://mega-mart-server.onrender.com/carts", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -54,6 +56,7 @@ const Cards = (props) => {
               timer: 1500,
             });
           }
+          refetch()
         });
     } else {
       Swal.fire({

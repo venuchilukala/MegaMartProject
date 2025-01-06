@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../contexts/AuthProvider";
+import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Profile = ({ user }) => {
-  const {logOut} = useContext(AuthContext)
+  const {logOut} = useAuth()
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -17,6 +17,7 @@ const Profile = ({ user }) => {
       console.log(error)
     })
   }
+
   return (
     <div>
       <div className="drawer drawer-end z-10">
@@ -45,7 +46,7 @@ const Profile = ({ user }) => {
           <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
             {/* Sidebar content here */}
             <li>
-              <a href="/update-profile">Profile</a>
+              <Link to="/update-profile">Profile</Link>
             </li>
             <li>
               <a>Order</a>
@@ -57,7 +58,7 @@ const Profile = ({ user }) => {
               <Link to="/dashboard">Dashboard</Link>
             </li>
             <li>
-              <a onClick={handleLogout}>Logout</a>
+              <button onClick={handleLogout}>Logout</button>
             </li>
           </ul>
         </div>
