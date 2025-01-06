@@ -6,6 +6,6 @@ const verifyToken = require('../middlewares/verifyToken')
 router.get('/',verifyToken ,cartController.getCartByEmail)
 router.post('/', cartController.addAndUpdateCart)
 router.delete('/:productId', cartController.deleteProduct);
-router.delete('/:id', cartController.deleteCart)
+router.delete('/clear-cart/:id', cartController.clearCart)
 
 module.exports = router

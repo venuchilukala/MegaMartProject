@@ -83,12 +83,12 @@ const Cards = (props) => {
         <FaHeart className="h-5 w-5 cursor-pointer" />
       </div>
       <Link>
-        <figure>
+        <figure className="w-full aspect-square overflow-hidden">
           <img
             // src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
             src={image}
             alt="Shoes"
-            className="hover:scale-105 transition-all duration-200"
+            className="w-full h-full object-cover hover:scale-105 transition-all duration-200"
           />
         </figure>
       </Link>

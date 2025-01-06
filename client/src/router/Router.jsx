@@ -16,6 +16,8 @@ import Login from "../components/Login";
 import AddProduct from "../pages/dashboard/admin/AddProduct";
 import ManageProduct from "../pages/dashboard/admin/ManageProduct";
 import UpdateProduct from "../pages/dashboard/admin/UpdateProduct";
+import PaymentSuccess from "../pages/shop/PaymentSuccess";
+import PaymentFailure from "../pages/shop/PaymentFailure";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
         path: "/update-profile",
         element: <UpdateProfile />,
       },
+      {
+        path: "/success",
+        element: <PaymentSuccess/>
+      },
+      {
+        path: "/failure",
+        element: <PaymentFailure/>
+      }
     ],
   },
   {
@@ -49,8 +59,8 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
   {
-    path : "/login",
-    element: <Login/>
+    path: "/login",
+    element: <Login />,
   },
   {
     path: "/dashboard",
@@ -61,27 +71,28 @@ const router = createBrowserRouter([
         element: <DashBoard />,
       },
       {
-        path : "users",
-        element : <Users/>
+        path: "users",
+        element: <Users />,
       },
       {
-        path : "add-product",
-        element : <AddProduct/>
+        path: "add-product",
+        element: <AddProduct />,
       },
       {
-        path: 'manage-product',
-        element: <ManageProduct/>
+        path: "manage-product",
+        element: <ManageProduct />,
       },
       {
-        path : "update-product/:id",
-        element: <UpdateProduct/>,
-        loader : ({params}) => fetch(`http://localhost:6001/products/${params.id}`)
-      }
+        path: "update-product/:id",
+        element: <UpdateProduct />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:6001/products/${params.id}`),
+      },
     ],
   },
   {
     path: "*",
-    element: <NotFound/>,
+    element: <NotFound />,
   },
 ]);
 
