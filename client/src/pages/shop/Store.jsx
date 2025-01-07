@@ -4,26 +4,31 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Store = () => {
   const [stores, setStores] = useState([]);
-  const axiosSecure = useAxiosSecure()
 
   useEffect(() => {
     const getStoresData = async () => {
-      const response = await axiosSecure("https://mega-mart-server.onrender.com/stores");
-      const data = await response.json();
-      console.log(data);
-      setStores(data)
+      try {
+        
+        const response = await fetch("https://mega-mart-server.onrender.com/stores")
+        const data = await response.json()
+        setStores(data)
+      } catch (error) {
+        console.error("Failed to fetch stores data:", error);
+        // Optionally, show an alert or display a fallback message
+      }
     };
-    getStoresData()
-  },[]);
+
+    getStoresData(); // <-- Ensure that the function is called here
+  }, []);
 
   return (
     <div>
       <h1>Store Filter Section</h1>
-      {
-        stores.map((store, index) => (
-          <StoreCard key={index} store={store}/>
-        ))
-      }
+      {stores.length > 0 ? (
+        stores.map((store, index) => <StoreCard key={index} store={store} />)
+      ) : (
+        <p>No stores available.</p>
+      )}
     </div>
   );
 };

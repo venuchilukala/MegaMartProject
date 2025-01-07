@@ -41,7 +41,7 @@ const UpdateProduct = () => {
         image: hostingImg.data.data.display_url,
         description: data.description,
       };
-      console.log(productItem);
+      
 
       const updatedItem = await axiosSecure.patch(
         `/products/${product._id}`,
